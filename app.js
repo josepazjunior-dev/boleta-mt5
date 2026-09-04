@@ -17,9 +17,9 @@
   function showStatus(html,type=''){statusBox.className=`order-status show ${type}`;statusBox.innerHTML=html;}
   async function checkOrder(token){
     try{
-      const data=await invoke('status-pedido',{token});
+      const data=await invoke('boleta-api',{acao:'status',token});
       if(data.status==='approved'){
-        showStatus(`<strong>Pagamento aprovado!</strong><br>Seu arquivo já está disponível.<a class="download-button" href="${cfg.SUPABASE_URL}/functions/v1/baixar-produto?token=${encodeURIComponent(token)}">BAIXAR BOLETA MT5</a>`,'success');
+        showStatus(`<strong>Pagamento aprovado!</strong><br>Seu arquivo já está disponível.<a class="download-button" href="${cfg.SUPABASE_URL}/functions/v1/boleta-api?acao=download&token=${encodeURIComponent(token)}">BAIXAR BOLETA MT5</a>`,'success');
       }else{
         showStatus('<strong>Aguardando confirmação do pagamento.</strong><br>Esta página verifica automaticamente. Normalmente leva poucos instantes.');
         setTimeout(()=>checkOrder(token),5000);
@@ -36,7 +36,7 @@
     if(!configured()){showStatus('A página ainda está em configuração. O pagamento será liberado em breve.');return;}
     button.disabled=true;button.textContent='ABRINDO PAGAMENTO...';
     try{
-      const data=await invoke('criar-pagamento',{email:value});
+      const data=await invoke('boleta-api',{acao:'criar-pagamento',email:value});
       location.href=data.checkout_url;
     }catch(err){showStatus(err.message);button.disabled=false;button.textContent='PAGAR COM MERCADO PAGO';}
   });
