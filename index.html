@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Boleta MT5 com controle de risco e trava diária de perdas." />
+    <title>Boleta MT5 — Controle suas perdas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#inicio">BOLETA <span>MT5</span></a>
+      <a class="top-cta" href="#comprar">Comprar por R$ 19,90</a>
+    </header>
+
+    <main id="inicio">
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow">DISCIPLINA PARA O SEU TRADING</div>
+          <h1>Mais controle.<br /><span>Menos impulso.</span></h1>
+          <p class="lead">Uma boleta manual para MetaTrader 5 criada para facilitar suas entradas e ajudar você a respeitar o próprio limite de perda.</p>
+          <div class="price"><small>pagamento único</small><strong>R$ 19,90</strong></div>
+          <a class="primary-button" href="#comprar">QUERO MINHA BOLETA</a>
+          <p class="microcopy">Pagamento seguro via Mercado Pago • Download após aprovação</p>
+        </div>
+        <div class="hero-art">
+          <div class="glow"></div>
+          <img src="assets/banner-boleta-mt5.png" alt="Boleta MT5 com painel de controle de perdas" />
+        </div>
+      </section>
+
+      <section class="features" aria-labelledby="vantagens">
+        <div class="section-heading">
+          <span>FEITA PARA SER SIMPLES</span>
+          <h2 id="vantagens">Tudo o que importa, direto no gráfico</h2>
+        </div>
+        <div class="feature-grid">
+          <article><div class="icon">↗</div><h3>Compra e venda rápidas</h3><p>Defina lote, gain e stop e envie suas ordens manualmente pelo painel.</p></article>
+          <article><div class="icon">$</div><h3>Resultado em tempo real</h3><p>Veja com clareza o resultado da operação aberta e o consolidado do dia.</p></article>
+          <article><div class="icon">▣</div><h3>Limite diário de perda</h3><p>Ao atingir o limite configurado, as posições são fechadas e novas entradas ficam bloqueadas.</p></article>
+          <article><div class="icon">24</div><h3>Pausa de 24 horas</h3><p>Uma trava temporal ajuda a evitar novas operações por impulso após o limite.</p></article>
+          <article><div class="icon">A+</div><h3>Zoom ajustável</h3><p>Aumente ou diminua o painel para melhorar a leitura e facilitar os cliques.</p></article>
+          <article><div class="icon">×</div><h3>Fechar tudo</h3><p>Zere as posições do símbolo atual com um único botão sempre disponível.</p></article>
+        </div>
+      </section>
+
+      <section id="comprar" class="checkout-section">
+        <div class="checkout-copy">
+          <span>ACESSO À BOLETA</span>
+          <h2>Comece a operar com regras mais claras.</h2>
+          <p>Informe um e-mail válido. Ele identifica sua compra para liberação do arquivo e atendimento de suporte.</p>
+          <ul><li>Licença para uso pessoal</li><li>Arquivo para MetaTrader 5</li><li>Suporte aos compradores cadastrados</li></ul>
+        </div>
+        <div class="checkout-card">
+          <div class="checkout-product"><div><small>BOLETA MT5</small><strong>Controle de Perdas</strong></div><b>R$ 19,90</b></div>
+          <form id="checkout-form" novalidate>
+            <label for="email">Seu melhor e-mail</label>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="voce@exemplo.com" required />
+            <p id="email-error" class="field-error" role="alert"></p>
+            <button id="pay-button" type="submit">PAGAR COM MERCADO PAGO</button>
+          </form>
+          <div id="order-status" class="order-status" aria-live="polite"></div>
+          <p class="security">🔒 Seus dados são usados somente para identificar a compra e prestar suporte.</p>
+        </div>
+      </section>
+
+      <section class="notice">
+        <strong>Importante:</strong> a boleta é uma ferramenta de execução manual e controle. Ela não promete resultados, não envia sinais e não opera automaticamente.
+      </section>
+    </main>
+
+    <footer><span>© 2026 Boleta MT5</span><span>Produto independente para MetaTrader 5.</span></footer>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
