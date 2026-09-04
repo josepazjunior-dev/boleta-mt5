@@ -1,0 +1,5 @@
+[functions.mercado-pago-webhook]
+verify_jwt = false
+
+[functions.baixar-produto]
+verify_jwt = false
