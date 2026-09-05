@@ -35,9 +35,16 @@
     if(!emailPattern.test(value)){error.textContent='Digite um e-mail válido, como nome@exemplo.com.';email.focus();return;}
     if(!configured()){showStatus('A página ainda está em configuração. O pagamento será liberado em breve.');return;}
     button.disabled=true;button.textContent='ABRINDO PAGAMENTO...';
+    const paymentWindow=window.open('about:blank','_blank');
     try{
       const data=await invoke('boleta-api',{acao:'criar-pagamento',email:value});
-      location.href=data.checkout_url;
+      if(paymentWindow){
+  paymentWindow.opener=null;
+  paymentWindow.location.href=data.checkout_url;
+  location.href=`${location.pathname}?pedido=${encodeURIComponent(data.token)}`;
+}else{
+  location.href=data.checkout_url;
+}
     }catch(err){showStatus(err.message);button.disabled=false;button.textContent='PAGAR COM MERCADO PAGO';}
   });
 })();
