@@ -185,7 +185,19 @@
         }
       );
 
-      location.href=data.checkout_url;
+      const pedidoUrl = `${location.pathname}?pedido=${encodeURIComponent(data.token)}`;
+history.replaceState({}, '', pedidoUrl);
+
+showStatus(
+  '<strong>Pagamento aberto em outra aba.</strong><br>' +
+  'Após pagar, volte para esta aba. Não faça outro pagamento: ' +
+  'esta página verificará automaticamente e liberará o download.'
+);
+
+window.open(data.checkout_url, '_blank', 'noopener');
+checkOrder(data.token);
+
+button.textContent = 'AGUARDANDO PAGAMENTO...';
     }catch(err){
       showStatus(err.message);
       button.disabled=false;
