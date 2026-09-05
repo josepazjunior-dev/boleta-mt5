@@ -36,6 +36,26 @@
     statusBox.innerHTML=html;
   }
 
+  async function copyLicense(license){
+    try{
+      await navigator.clipboard.writeText(license);
+    }catch(_){
+      const field=document.createElement('textarea');
+      field.value=license;
+      field.style.position='fixed';
+      field.style.opacity='0';
+      document.body.appendChild(field);
+      field.select();
+      document.execCommand('copy');
+      field.remove();
+    }
+    const copyButton=document.getElementById('copy-license-button');
+    if(copyButton){
+      copyButton.textContent='LICENÇA COPIADA!';
+      setTimeout(()=>{copyButton.textContent='COPIAR LICENÇA';},2000);
+    }
+  }
+
   async function downloadFile(token){
     const downloadButton=document.getElementById('download-button');
     if(downloadButton){
@@ -68,13 +88,45 @@
       link.click();
       link.remove();
       setTimeout(()=>URL.revokeObjectURL(objectUrl),1000);
-
-      if(downloadButton){
-        downloadButton.disabled=false;
-        downloadButton.textContent='BAIXAR NOVAMENTE';
-      }
+      setTimeout(()=>checkOrder(token),500);
     }catch(e){
       showStatus(`<strong>Pagamento aprovado.</strong><br>${e.message}`,'success');
+    }
+  }
+
+  function approvedView(data,token){
+    const license=String(data.license_key||'');
+    const remaining=Number(data.downloads_remaining||0);
+    const expiry=data.download_expires_at
+      ? new Date(data.download_expires_at).toLocaleString('pt-BR')
+      : '';
+
+    let html=
+      '<strong>Pagamento aprovado!</strong><br>'+ 
+      'Guarde a licença abaixo. Ela será solicitada no MetaTrader 5.'+
+      '<div style="margin:14px 0;padding:12px;border:1px solid #2fd17d;border-radius:8px;text-align:center">'+
+      '<small style="display:block;margin-bottom:6px">SUA LICENÇA</small>'+
+      '<strong style="font-size:18px;letter-spacing:1px">'+license+'</strong>'+
+      '</div>'+
+      '<button class="download-button" id="copy-license-button" type="button">COPIAR LICENÇA</button>';
+
+    if(remaining>0){
+      html+=
+        '<button class="download-button" id="download-button" type="button">BAIXAR BOLETA MT5</button>'+
+        `<small style="display:block;margin-top:10px">Downloads disponíveis: ${remaining} de 2`+
+        (expiry?` • prazo: ${expiry}`:'')+'</small>';
+    }else{
+      html+=
+        '<p style="margin-top:12px"><strong>Limite de downloads atingido.</strong><br>'+ 
+        'Se precisar novamente, fale com o suporte.</p>';
+    }
+
+    showStatus(html,'success');
+    document.getElementById('copy-license-button')
+      .addEventListener('click',()=>copyLicense(license));
+    const downloadButton=document.getElementById('download-button');
+    if(downloadButton){
+      downloadButton.addEventListener('click',()=>downloadFile(token));
     }
   }
 
@@ -85,15 +137,7 @@
       if(data.status==='approved'){
         button.disabled=true;
         button.textContent='PAGAMENTO APROVADO';
-        showStatus(
-          '<strong>Pagamento aprovado!</strong><br>'+ 
-          'Seu arquivo já está disponível.'+
-          '<button class="download-button" id="download-button" type="button">'+
-          'BAIXAR BOLETA MT5</button>',
-          'success'
-        );
-        document.getElementById('download-button')
-          .addEventListener('click',()=>downloadFile(token));
+        approvedView(data,token);
       }else if(data.status==='rejected'||data.status==='cancelled'){
         button.disabled=false;
         button.textContent='TENTAR PAGAMENTO NOVAMENTE';
@@ -101,15 +145,21 @@
           '<strong>O pagamento não foi aprovado.</strong><br>'+ 
           'Você pode tentar novamente ou escolher outra forma de pagamento.'
         );
+      }else if(data.status==='refunded'){
+        button.disabled=true;
+        button.textContent='PAGAMENTO DEVOLVIDO';
+        showStatus(
+          '<strong>Pagamento devolvido.</strong><br>A licença desta compra está desativada.'
+        );
       }else{
         showStatus(
           '<strong>Aguardando confirmação do pagamento.</strong><br>'+ 
           'Faça somente um pagamento. Esta página verifica automaticamente '+
-          'e liberará o download quando o Mercado Pago confirmar.'
+          'e exibirá sua licença quando o Mercado Pago confirmar.'
         );
         setTimeout(()=>checkOrder(token),5000);
       }
-    }catch(e){
+    }catch(_){
       showStatus(
         '<strong>Não foi possível verificar agora.</strong><br>'+ 
         'A página tentará novamente automaticamente.'
@@ -142,10 +192,7 @@
       return;
     }
 
-    /* A aba precisa ser aberta imediatamente pelo clique do cliente.
-       Se for aberta somente depois do await, o navegador pode bloqueá-la. */
     const paymentTab=window.open('about:blank','_blank');
-
     if(!paymentTab){
       showStatus(
         '<strong>O navegador bloqueou a página de pagamento.</strong><br>'+ 
@@ -157,9 +204,7 @@
     paymentTab.document.title='Preparando pagamento';
     paymentTab.document.body.innerHTML=
       '<div style="font-family:Arial,sans-serif;text-align:center;margin-top:80px">'+
-      '<h2>Preparando o pagamento...</h2>'+
-      '<p>Não feche esta página.</p>'+
-      '</div>';
+      '<h2>Preparando o pagamento...</h2><p>Não feche esta página.</p></div>';
 
     button.disabled=true;
     button.textContent='ABRINDO PAGAMENTO...';
@@ -174,16 +219,11 @@
         throw new Error('Resposta de pagamento incompleta. Tente novamente.');
       }
 
-      history.replaceState(
-        {},
-        '',
-        `${location.pathname}?pedido=${encodeURIComponent(data.token)}`
-      );
-
+      history.replaceState({},'',`${location.pathname}?pedido=${encodeURIComponent(data.token)}`);
       showStatus(
         '<strong>Pagamento aberto em outra aba.</strong><br>'+ 
         'Faça somente um pagamento. Depois de pagar, volte para esta aba. '+
-        'O download será liberado automaticamente.'
+        'Sua licença e o download aparecerão automaticamente.'
       );
 
       button.textContent='AGUARDANDO PAGAMENTO...';
