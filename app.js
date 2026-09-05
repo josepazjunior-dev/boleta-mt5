@@ -56,6 +56,27 @@
     }
   }
 
+  async function copySupabaseUrl(){
+    const url='https://dbxchnnvvioffxxmbctl.supabase.co';
+    try{
+      await navigator.clipboard.writeText(url);
+    }catch(_){
+      const field=document.createElement('textarea');
+      field.value=url;
+      field.style.position='fixed';
+      field.style.opacity='0';
+      document.body.appendChild(field);
+      field.select();
+      document.execCommand('copy');
+      field.remove();
+    }
+    const copyButton=document.getElementById('copy-supabase-button');
+    if(copyButton){
+      copyButton.textContent='URL COPIADA!';
+      setTimeout(()=>{copyButton.textContent='COPIAR URL DO SUPABASE';},2000);
+    }
+  }
+
   async function downloadFile(token){
     const downloadButton=document.getElementById('download-button');
     if(downloadButton){
@@ -108,7 +129,13 @@
       '<small style="display:block;margin-bottom:6px">SUA LICENÇA</small>'+
       '<strong style="font-size:18px;letter-spacing:1px">'+license+'</strong>'+
       '</div>'+
-      '<button class="download-button" id="copy-license-button" type="button">COPIAR LICENÇA</button>';
+      '<button class="download-button" id="copy-license-button" type="button">COPIAR LICENÇA</button>'+
+      '<div style="margin:14px 0;padding:12px;border:1px solid rgba(47,209,125,.45);border-radius:8px">'+
+      '<strong>ATIVAÇÃO NO METATRADER 5</strong><br>'+
+      '<small>Após assistir ao vídeo de instalação, copie a URL abaixo e adicione em Ferramentas → Opções → Consultor Expert → WebRequest.</small>'+
+      '<div style="margin:10px 0;overflow-wrap:anywhere">https://dbxchnnvvioffxxmbctl.supabase.co</div>'+
+      '<button class="download-button" id="copy-supabase-button" type="button">COPIAR URL DO SUPABASE</button>'+
+      '</div>';
 
     if(remaining>0){
       html+=
@@ -124,6 +151,8 @@
     showStatus(html,'success');
     document.getElementById('copy-license-button')
       .addEventListener('click',()=>copyLicense(license));
+    document.getElementById('copy-supabase-button')
+      .addEventListener('click',copySupabaseUrl);
     const downloadButton=document.getElementById('download-button');
     if(downloadButton){
       downloadButton.addEventListener('click',()=>downloadFile(token));
