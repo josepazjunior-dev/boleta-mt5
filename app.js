@@ -197,8 +197,10 @@
     }
   }
 
-  const token=new URLSearchParams(location.search).get('pedido');
+  const token=new URLSearchParams(location.search).get('pedido') ||
+    sessionStorage.getItem('boleta_pedido');
   if(token){
+    sessionStorage.setItem('boleta_pedido',token);
     document.getElementById('comprar').scrollIntoView();
     button.disabled=true;
     button.textContent='VERIFICANDO PAGAMENTO...';
@@ -221,20 +223,6 @@
       return;
     }
 
-    const paymentTab=window.open('about:blank','_blank');
-    if(!paymentTab){
-      showStatus(
-        '<strong>O navegador bloqueou a página de pagamento.</strong><br>'+ 
-        'Autorize as janelas pop-up deste site e clique novamente.'
-      );
-      return;
-    }
-
-    paymentTab.document.title='Preparando pagamento';
-    paymentTab.document.body.innerHTML=
-      '<div style="font-family:Arial,sans-serif;text-align:center;margin-top:80px">'+
-      '<h2>Preparando o pagamento...</h2><p>Não feche esta página.</p></div>';
-
     button.disabled=true;
     button.textContent='ABRINDO PAGAMENTO...';
 
@@ -248,18 +236,16 @@
         throw new Error('Resposta de pagamento incompleta. Tente novamente.');
       }
 
-      history.replaceState({},'',`${location.pathname}?pedido=${encodeURIComponent(data.token)}`);
+      sessionStorage.setItem('boleta_pedido',data.token);
       showStatus(
-        '<strong>Pagamento aberto em outra aba.</strong><br>'+ 
-        'Faça somente um pagamento. Depois de pagar, volte para esta aba. '+
-        'Sua licença e o download aparecerão automaticamente.'
+        '<strong>Redirecionando para o Mercado Pago.</strong><br>'+ 
+        'Após a aprovação, você retornará automaticamente para acessar '+
+        'sua licença e o download.'
       );
 
-      button.textContent='AGUARDANDO PAGAMENTO...';
-      paymentTab.location.replace(data.checkout_url);
-      checkOrder(data.token);
+      button.textContent='REDIRECIONANDO...';
+      window.location.assign(data.checkout_url);
     }catch(err){
-      paymentTab.close();
       showStatus(err.message);
       button.disabled=false;
       button.textContent='PAGAR COM MERCADO PAGO';
