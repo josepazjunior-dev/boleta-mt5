@@ -1,86 +1,224 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Boleta MT5 com controle de risco e trava diária de perdas." />
-    <title>Boleta MT5 — Controle suas perdas</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <header class="topbar">
-      <a class="brand" href="#inicio">BOLETA <span>MT5</span></a>
-      <a class="top-cta" href="#comprar">Comprar por R$ 19,90</a>
-    </header>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boleta MT5 — Controle de Perdas para MetaTrader 5</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background:#0b1120; color:#e6e9f0; line-height:1.6; }
+  a { text-decoration:none; }
+  .container { max-width:1100px; margin:0 auto; padding:0 20px; }
 
-    <main id="inicio">
-      <section class="hero">
-        <div class="hero-copy">
-          <div class="eyebrow">DISCIPLINA PARA O SEU TRADING</div>
-          <h1>Mais controle.<br /><span>Menos impulso.</span></h1>
-          <p class="lead">Uma boleta manual para MetaTrader 5 criada para facilitar suas entradas e ajudar você a respeitar o próprio limite de perda.</p>
-          <div class="price"><small>pagamento único</small><strong>R$ 19,90</strong></div>
-          <a class="primary-button" href="#comprar">QUERO MINHA BOLETA</a>
-          <a class="primary-button"
-   style="margin-left:10px;background:transparent;color:#f4f7f5;border:1px solid rgba(47,209,125,.55);box-shadow:none"
-   href="https://youtu.be/XNsEqCsQ4mg"
-   target="_blank"
-   rel="noopener noreferrer">
-   ▶ VEJA A BOLETA EM FUNCIONAMENTO
-</a>
-          <p class="microcopy">Pagamento seguro via Mercado Pago • Download após aprovação</p>
-        </div>
-        <div class="hero-art">
-          <div class="glow"></div>
-          <img src="assets/banner-boleta-mt5.png" alt="Boleta MT5 com painel de controle de perdas" />
-        </div>
-      </section>
+  /* HERO */
+  .hero { background: linear-gradient(180deg,#0b1120 0%, #101a33 100%); padding:60px 0 50px; text-align:center; }
+  .hero h1 { font-size:2.2rem; color:#fff; margin-bottom:14px; }
+  .hero h1 span { color:#4dd6a3; }
+  .hero p.subtitle { font-size:1.1rem; color:#b9c2d6; max-width:650px; margin:0 auto 26px; }
+  .price-box { display:inline-block; background:#141f3d; border:1px solid #263258; padding:16px 30px; border-radius:12px; margin-bottom:26px; }
+  .price-box .label { font-size:0.85rem; color:#9aa5c0; }
+  .price-box .price { font-size:2rem; color:#4dd6a3; font-weight:bold; }
+  .cta-btn { display:inline-block; background:#4dd6a3; color:#0b1120; font-weight:bold; padding:16px 36px; border-radius:8px; font-size:1.05rem; border:none; cursor:pointer; transition:.2s; }
+  .cta-btn:hover { background:#3fc192; }
+  .hero .secure { margin-top:16px; font-size:0.85rem; color:#7c88a8; }
 
-      <section class="features" aria-labelledby="vantagens">
-        <div class="section-heading">
-          <span>FEITA PARA SER SIMPLES</span>
-          <h2 id="vantagens">Tudo o que importa, direto no gráfico</h2>
-        </div>
-        <div class="feature-grid">
-          <article><div class="icon">↗</div><h3>Compra e venda rápidas</h3><p>Defina lote, gain e stop e envie suas ordens manualmente pelo painel.</p></article>
-          <article><div class="icon">$</div><h3>Resultado em tempo real</h3><p>Veja com clareza o resultado da operação aberta e o consolidado do dia.</p></article>
-          <article><div class="icon">▣</div><h3>Limite diário de perda</h3><p>Ao atingir o limite configurado, as posições são fechadas e novas entradas ficam bloqueadas.</p></article>
-          <article><div class="icon">24</div><h3>Pausa de 24 horas</h3><p>Uma trava temporal ajuda a evitar novas operações por impulso após o limite.</p></article>
-          <article><div class="icon">A+</div><h3>Zoom ajustável</h3><p>Aumente ou diminua o painel para melhorar a leitura e facilitar os cliques.</p></article>
-          <article><div class="icon">×</div><h3>Fechar tudo</h3><p>Zere as posições do símbolo atual com um único botão sempre disponível.</p></article>
-        </div>
-      </section>
+  /* VIDEO */
+  .video-section { padding:50px 0; text-align:center; }
+  .video-section h2 { color:#fff; font-size:1.6rem; margin-bottom:24px; }
+  .video-wrapper { position:relative; padding-bottom:56.25%; height:0; overflow:hidden; max-width:800px; margin:0 auto; border-radius:12px; border:1px solid #263258; }
+  .video-wrapper iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:0; }
 
-      <section id="comprar" class="checkout-section">
-        <div class="checkout-copy">
-          <span>ACESSO À BOLETA</span>
-          <h2>Comece a operar com regras mais claras.</h2>
-          <p>Informe um e-mail válido. Ele identifica sua compra para liberação do arquivo e atendimento de suporte.</p>
-          <ul><li>Licença para uso pessoal</li><li>Arquivo para MetaTrader 5</li><li>Suporte aos compradores cadastrados</li></ul>
-        </div>
-        <div class="checkout-card">
-          <div class="checkout-product"><div><small>BOLETA MT5</small><strong>Controle de Perdas</strong></div><b>R$ 19,90</b></div>
-          <form id="checkout-form" novalidate>
-            <label for="email">Seu melhor e-mail</label>
-            <input id="email" name="email" type="email" autocomplete="email" placeholder="voce@exemplo.com" required />
-            <p id="email-error" class="field-error" role="alert"></p>
-            <button id="pay-button" type="submit">PAGAR COM MERCADO PAGO</button>
-          </form>
-          <div id="order-status" class="order-status" aria-live="polite"></div>
-          <p class="security">🔒 Seus dados são usados somente para identificar a compra e prestar suporte.</p>
-        </div>
-      </section>
+  /* FEATURES */
+  .features { background:#0e1830; padding:60px 0; }
+  .features h2 { text-align:center; color:#fff; font-size:1.8rem; margin-bottom:40px; }
+  .features-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px,1fr)); gap:24px; }
+  .feature-card { background:#141f3d; border:1px solid #263258; border-radius:12px; padding:26px; }
+  .feature-card .icon { font-size:1.6rem; color:#4dd6a3; margin-bottom:12px; }
+  .feature-card h3 { color:#fff; font-size:1.05rem; margin-bottom:8px; }
+  .feature-card p { color:#b9c2d6; font-size:0.92rem; }
 
-      <section class="notice">
-        <strong>Importante:</strong> a boleta é uma ferramenta de execução manual e controle. Ela não promete resultados, não envia sinais e não opera automaticamente.
-      </section>
-    </main>
+  /* HOW IT WORKS */
+  .how { padding:60px 0; text-align:center; }
+  .how h2 { color:#fff; font-size:1.8rem; margin-bottom:40px; }
+  .steps { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:24px; }
+  .step { background:#141f3d; border:1px solid #263258; border-radius:12px; padding:26px; }
+  .step .num { display:inline-block; width:36px; height:36px; line-height:36px; background:#4dd6a3; color:#0b1120; border-radius:50%; font-weight:bold; margin-bottom:12px; }
+  .step h3 { color:#fff; font-size:1rem; margin-bottom:8px; }
+  .step p { color:#b9c2d6; font-size:0.9rem; }
 
-    <footer><span>© 2026 Boleta MT5</span><span>Produto independente para MetaTrader 5.</span></footer>
-    <script src="config.js"></script>
-    <script src="app.js"></script>
-  </body>
+  /* PURCHASE FORM */
+  .purchase { background:#0e1830; padding:60px 0; }
+  .purchase-box { max-width:420px; margin:0 auto; background:#141f3d; border:1px solid #263258; border-radius:14px; padding:34px; text-align:center; }
+  .purchase-box h3 { color:#fff; font-size:1.2rem; margin-bottom:6px; }
+  .purchase-box .sub { color:#9aa5c0; font-size:0.9rem; margin-bottom:20px; }
+  .purchase-box .amount { color:#4dd6a3; font-size:1.8rem; font-weight:bold; margin-bottom:20px; }
+  .purchase-box input[type="email"] { width:100%; padding:14px; border-radius:8px; border:1px solid #263258; background:#0b1120; color:#fff; margin-bottom:16px; font-size:0.95rem; }
+  .purchase-box ul { text-align:left; color:#b9c2d6; font-size:0.88rem; margin-bottom:20px; padding-left:20px; }
+  .purchase-box .note { font-size:0.78rem; color:#7c88a8; margin-top:14px; }
+
+  /* FAQ */
+  .faq { padding:60px 0; }
+  .faq h2 { text-align:center; color:#fff; font-size:1.8rem; margin-bottom:36px; }
+  .faq-item { border-bottom:1px solid #263258; padding:18px 0; }
+  .faq-item h3 { color:#fff; font-size:1rem; margin-bottom:6px; }
+  .faq-item p { color:#b9c2d6; font-size:0.92rem; }
+
+  /* FOOTER */
+  footer { background:#0b1120; border-top:1px solid #263258; padding:34px 0; text-align:center; }
+  footer .disclaimer { color:#7c88a8; font-size:0.82rem; max-width:700px; margin:0 auto 14px; }
+  footer .copy { color:#4a5375; font-size:0.8rem; }
+
+  @media (max-width:600px){
+    .hero h1{font-size:1.6rem;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="container">
+    <h1>Mais controle. <span>Menos impulso.</span></h1>
+    <p class="subtitle">Uma boleta manual para MetaTrader 5 criada para facilitar suas entradas e ajudar você a respeitar o próprio limite de perda.</p>
+    <div class="price-box">
+      <div class="label">pagamento único</div>
+      <div class="price">R$ 19,90</div>
+    </div>
+    <br>
+    <a href="#comprar" class="cta-btn">QUERO MINHA BOLETA</a>
+    <p class="secure">🔒 Pagamento seguro via Mercado Pago • Download após aprovação</p>
+  </div>
+</section>
+
+<!-- ================= VIDEO ================= -->
+<section class="video-section">
+  <div class="container">
+    <h2>Veja a boleta em funcionamento</h2>
+    <div class="video-wrapper">
+      <iframe src="https://www.youtube.com/embed/XNsEqCsQ4mg" title="Boleta MT5 em funcionamento" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FEATURES ================= -->
+<section class="features">
+  <div class="container">
+    <h2>Tudo o que importa, direto no gráfico</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="icon">↗</div>
+        <h3>Compra e venda rápidas</h3>
+        <p>Defina lote, gain e stop e envie suas ordens manualmente pelo painel.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">$</div>
+        <h3>Resultado em tempo real</h3>
+        <p>Veja com clareza o resultado da operação aberta e o consolidado do dia.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">▣</div>
+        <h3>Limite diário de perda</h3>
+        <p>Ao atingir o limite configurado, as posições são fechadas e novas entradas ficam bloqueadas.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">24</div>
+        <h3>Pausa de 24 horas</h3>
+        <p>Uma trava temporal ajuda a evitar novas operações por impulso após o limite.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">A+</div>
+        <h3>Zoom ajustável</h3>
+        <p>Aumente ou diminua o painel para melhorar a leitura e facilitar os cliques.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">×</div>
+        <h3>Fechar tudo</h3>
+        <p>Zere as posições do símbolo atual com um único botão sempre disponível.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= HOW IT WORKS ================= -->
+<section class="how">
+  <div class="container">
+    <h2>Como funciona</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <h3>Informe seu e-mail e pague</h3>
+        <p>Preencha seu melhor e-mail e finalize o pagamento com segurança via Mercado Pago.</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <h3>Pagamento aprovado</h3>
+        <p>Assim que o pagamento é confirmado, sua compra é identificada automaticamente.</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <h3>Receba o arquivo</h3>
+        <p>O link de download da boleta para MetaTrader 5 é liberado para o e-mail cadastrado.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PURCHASE ================= -->
+<section class="purchase" id="comprar">
+  <div class="container">
+    <div class="purchase-box">
+      <h3>Boleta MT5 — Controle de Perdas</h3>
+      <p class="sub">Comece a operar com regras mais claras.</p>
+      <div class="amount">R$ 19,90</div>
+      <ul>
+        <li>Licença para uso pessoal</li>
+        <li>Arquivo para MetaTrader 5</li>
+        <li>Suporte aos compradores cadastrados</li>
+      </ul>
+      <form>
+        <input type="email" placeholder="Seu melhor e-mail" required>
+        <button type="submit" class="cta-btn" style="width:100%;">PAGAR COM MERCADO PAGO</button>
+      </form>
+      <p class="note">🔒 Seus dados são usados somente para identificar a compra e prestar suporte.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="faq">
+  <div class="container">
+    <h2>Perguntas frequentes</h2>
+    <div class="faq-item">
+      <h3>A boleta é um robô?</h3>
+      <p>Não. É uma ferramenta de execução manual e controle. Ela não opera automaticamente.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Ela envia sinais de compra ou venda?</h3>
+      <p>Não. A boleta não envia sinais nem faz recomendações de entrada.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Em qual plataforma ela funciona?</h3>
+      <p>A boleta foi desenvolvida para uso no MetaTrader 5.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Como recebo o arquivo após a compra?</h3>
+      <p>Após a aprovação do pagamento via Mercado Pago, o link de download é liberado para o e-mail informado na compra.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="container">
+    <p class="disclaimer"><strong>Importante:</strong> a boleta é uma ferramenta de execução manual e controle. Ela não promete resultados, não envia sinais e não opera automaticamente.</p>
+    <p class="copy">© 2026 Boleta MT5 — Produto independente para MetaTrader 5.</p>
+  </div>
+</footer>
+
+<!-- 
+  Insira aqui o código do Meta Pixel (antes de </head> em produção) 
+  e dispare o evento "Purchase" no momento da confirmação de pagamento.
+-->
+
+</body>
 </html>
