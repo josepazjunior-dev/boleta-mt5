@@ -115,6 +115,12 @@
     }
   }
 
+  /* Meta Pixel: Evento de Compra (dispara 1x por pedido) */
+if(!window.__purchaseTrackedTokens) window.__purchaseTrackedTokens={};
+if(!window.__purchaseTrackedTokens[token]){
+  window.__purchaseTrackedTokens[token]=true;
+  fbq('track','Purchase',{value:19.90,currency:'BRL',content_type:'product',content_name:'Boleta MT5 - Controle de Perdas'});
+}
   function approvedView(data,token){
     const license=String(data.license_key||'');
     const remaining=Number(data.downloads_remaining||0);
