@@ -121,6 +121,9 @@
     const expiry=data.download_expires_at
       ? new Date(data.download_expires_at).toLocaleString('pt-BR')
       : '';
+    const licenseExpiry=data.license_expires_at
+      ? new Date(data.license_expires_at).toLocaleDateString('pt-BR')
+      : '';
 
     let html=
       '<strong>Pagamento aprovado!</strong><br>'+ 
@@ -128,6 +131,7 @@
       '<div style="margin:14px 0;padding:12px;border:1px solid #2fd17d;border-radius:8px;text-align:center">'+
       '<small style="display:block;margin-bottom:6px">SUA LICENÇA</small>'+
       '<strong style="font-size:18px;letter-spacing:1px">'+license+'</strong>'+
+      (licenseExpiry?'<small style="display:block;margin-top:8px">Válida até: '+licenseExpiry+'</small>':'')+
       '</div>'+
       '<button class="download-button" id="copy-license-button" type="button">COPIAR LICENÇA</button>'+
       '<div style="margin:14px 0;padding:12px;border:1px solid rgba(47,209,125,.45);border-radius:8px">'+
